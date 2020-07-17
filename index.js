@@ -27,10 +27,7 @@ Airplane.prototype.land = function () {
 */
 
 /*
-  TASK 1
-    - Write a Person Constructor that initializes `name` and `age` from arguments.
-    - All instances of Person should initialize with an empty `stomach` array.
-    - Give instances of Person the ability to `.eat("someFood")`:
+  TASK 1]
         + When eating an edible, it should be pushed into the `stomach`.
         + The `eat` method should have no effect if there are 10 items in the `stomach`.
     - Give instances of Person the ability to `.poop()`:
@@ -39,8 +36,24 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = []
+}
 
+Person.prototype.eat = function (cookies) {
+  if (this.stomach.length < 10) {
+    this.stomach.push(cookies)
+  }
+}
+
+Person.prototype.poop = function () {
+  this.stomach = [];
+}
+
+Person.prototype.toString = function () {
+  return `${this.name} age of ${this.age}`
 }
 
 /*
@@ -57,8 +70,14 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.tank = 0;
+  this.odometer = 0;
+}
 
+Car.prototype.fill = function (gallons) {
+  return (this.tank += gallons);
 }
 
 /*
@@ -68,18 +87,25 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
-
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
 }
+
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype = function () {
+  return `Playing with ${this.favoriteToy}`
+}
+
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Explicit binding is where this references the argument.
+  2. Implicit binding references the object before the dot.
+  3. Global scope refers to the window or global object.
+  4. New binding refers to a new object when it is created
 */
 
 
@@ -88,8 +114,16 @@ function Baby() {
 ///////// END OF CHALLENGE /////////
 if (typeof exports !== 'undefined') {
   module.exports = module.exports || {}
-  if (Airplane) { module.exports.Airplane = Airplane }
-  if (Person) { module.exports.Person = Person }
-  if (Car) { module.exports.Car = Car }
-  if (Baby) { module.exports.Baby = Baby }
+  if (Airplane) {
+    module.exports.Airplane = Airplane
+  }
+  if (Person) {
+    module.exports.Person = Person
+  }
+  if (Car) {
+    module.exports.Car = Car
+  }
+  if (Baby) {
+    module.exports.Baby = Baby
+  }
 }
